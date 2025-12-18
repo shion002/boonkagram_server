@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: cafe
+  profiles:
+    active: local
+
+server:
+  port: 8083
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
+        http-only: true
+        secure: false
+        same-site: lax
+        max-age: 1800
+        path: /
+
+      tracking-modes: cookie
+
+      timeout: 30m

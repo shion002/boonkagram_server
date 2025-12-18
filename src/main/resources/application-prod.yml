@@ -1,0 +1,59 @@
+openapi:
+  url: ${OPEN_API_URL}
+  serviceKey: ${OPEN_API_SERVICE_KEY}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: ${DATABASE_DRIVER_CLASS}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 100
+  main:
+    allow-bean-definition-overriding: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+      cleanup-cron: "0 0 * * * *"
+    timeout: 30m
+naver:
+  finder:
+    api:
+      client-id: ${NAVER_API_CLIENT_ID}
+      client-secret: ${NAVER_API_SECRET_KEY}
+kakao:
+  finder:
+    api:
+      key: ${KAKAO_API_KEY}
+solapi:
+  api-key: ${SOL_API_KEY}
+  api-secret: ${SOL_SECRET_KEY}
+  from-number: ${SOL_FROM_NUMBER}
+jasypt:
+  secret-key: ${JASYPT_SECRET_KEY}
+cloud:
+  aws:
+    s3:
+      bucket-name: ${S3_BUCKET_NAME}
+      region: ${S3_REGION}
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

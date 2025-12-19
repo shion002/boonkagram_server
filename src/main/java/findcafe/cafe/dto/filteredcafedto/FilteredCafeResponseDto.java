@@ -68,7 +68,7 @@ public class FilteredCafeResponseDto {
     public FilteredCafeResponseDto(Long id, String name, String address, String roadAddress,
                                    String industryCode, String industryName, Double lat, Double lon,
                                    List<String> keywords, String source, Double rating, Integer reviewCount,
-                                   LocalDateTime createData, String thumbnail, String intro, String s3FolderPath) {
+                                   LocalDateTime createData, String thumbnail, String titleIntro, String s3FolderPath) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -83,7 +83,7 @@ public class FilteredCafeResponseDto {
         this.reviewCount = reviewCount;
         this.createData = createData;
         this.thumbnail = thumbnail;
-        this.intro = intro;
+        this.titleIntro = titleIntro;
         this.s3FolderPath = s3FolderPath;
     }
 }

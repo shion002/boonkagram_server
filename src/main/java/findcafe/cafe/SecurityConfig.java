@@ -43,7 +43,8 @@ public class SecurityConfig {
                                 "/api/cafe/**",
                                 "/api/auth/**",
                                 "/api/cafes/**",
-                                "/api/search/**"
+                                "/api/search/**",
+                                "/api/**"
                                 ).permitAll()
                         .anyRequest().authenticated()
                 )

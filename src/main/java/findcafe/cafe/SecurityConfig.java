@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/auth/logout").permitAll()
-                        .requestMatchers("/api/cafe/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/cafe/admin/**").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
                         .requestMatchers(
                                 "/api/list/**",
                                 "/api/cafe/**",

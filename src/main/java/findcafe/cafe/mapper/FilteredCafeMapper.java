@@ -33,7 +33,7 @@ public class FilteredCafeMapper {
                 filteredCafe.getLat(), filteredCafe.getLon(),
                  filteredCafe.getKeywords(), filteredCafe.getSource(), filteredCafe.getRating(),
                 filteredCafe.getReviewCount(), filteredCafe.getCreateData(),
-                filteredCafe.getThumbnail(), filteredCafe.getIntro(), filteredCafe.getS3FolderPath());
+                filteredCafe.getThumbnail(), filteredCafe.getTitleIntro(), filteredCafe.getS3FolderPath());
     }
 
     private static String parseStringOrNull(Double value) {

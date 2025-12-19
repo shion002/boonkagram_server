@@ -2,8 +2,6 @@ package findcafe.cafe.entity;
 
 import findcafe.cafe.dto.filteredcafedto.FilteredCafeResponseDto;
 import findcafe.cafe.dto.postcafedto.PostCafeRequestDto;
-import findcafe.cafe.dto.postcafedto.PostCafeResponseDto;
-import findcafe.cafe.mapper.PostCafeMapper;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +36,7 @@ public class FilteredCafe {
     private String source; // 데이터 출처
     private Double rating; // 평점
     private Integer reviewCount; // 리뷰 개수
-    private String intro;
+    private String titleIntro;
     private String s3FolderPath;
 
     private LocalDateTime createData; // 등록 시간
@@ -59,7 +57,7 @@ public class FilteredCafe {
         this.rating = rating;
         this.reviewCount = reviewCount;
         this.createData = createData;
-        this.intro = intro;
+        this.titleIntro = intro;
         this.thumbnail = thumbnail;
     }
 
@@ -70,7 +68,7 @@ public class FilteredCafe {
         this.address = dto.getAddress();
         this.lat = dto.getLat();
         this.lon = dto.getLon();
-        this.intro = dto.getTitleIntro();
+        this.titleIntro = dto.getTitleIntro();
         this.thumbnail = thumbnail;
         this.s3FolderPath = s3FolderPath;
         this.createData = LocalDateTime.now();
@@ -101,7 +99,7 @@ public class FilteredCafe {
         if (dto.getAddress() != null) {
             this.address = dto.getAddress();
         }
-        this.intro = dto.getTitleIntro();
+        this.titleIntro = dto.getTitleIntro();
 
         if (dto.getLat() != null) {
             this.lat = dto.getLat();

@@ -65,7 +65,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "https://boonkagram.com"
         ));
 
         configuration.setAllowedMethods(Arrays.asList(

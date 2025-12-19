@@ -105,7 +105,7 @@ public class FilteredCafeRepositoryImpl implements FilteredCafeRepositoryCustom 
                         filteredCafe.lat,
                         filteredCafe.lon,
                         filteredCafe.thumbnail,
-                        filteredCafe.intro
+                        filteredCafe.titleIntro
                 ))
                 .from(filteredCafe)
                 .where(builder)
@@ -140,7 +140,7 @@ public class FilteredCafeRepositoryImpl implements FilteredCafeRepositoryCustom 
                         filteredCafe.lat,
                         filteredCafe.lon,
                         filteredCafe.thumbnail,
-                        filteredCafe.intro,
+                        filteredCafe.titleIntro,
                         distance.as("distance")
                 ))
                 .from(filteredCafe)

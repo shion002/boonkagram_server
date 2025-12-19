@@ -35,9 +35,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/cafe/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/auth/logout").permitAll()
-                        .requestMatchers("/api/cafe/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers(
                                 "/api/list/**",
                                 "/api/cafe/**",

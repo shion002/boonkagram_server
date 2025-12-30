@@ -2,9 +2,12 @@ package findcafe.cafe.mapper;
 
 import findcafe.cafe.dto.postcafedto.PostCafeRequestDto;
 import findcafe.cafe.dto.postcafedto.PostCafeResponseDto;
+import findcafe.cafe.dto.reviewdto.ReviewResponseDto;
 import findcafe.cafe.dto.utildto.ImageDto;
 import findcafe.cafe.entity.PostCafe;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PostCafeMapper {
@@ -17,7 +20,8 @@ public class PostCafeMapper {
     }
 
     public static PostCafeResponseDto toDto(PostCafe postCafe){
-        return new PostCafeResponseDto(postCafe.getName(), postCafe.getAddress(), postCafe.getPhone(), postCafe.getInstagram(),
+        return new PostCafeResponseDto(postCafe.getId(), postCafe.getName(), postCafe.getAddress(), postCafe.getPhone(), postCafe.getInstagram(),
                 postCafe.getWebUrl(), postCafe.getIntro(), postCafe.getMenus(), postCafe.getImageUrls());
     }
+
 }

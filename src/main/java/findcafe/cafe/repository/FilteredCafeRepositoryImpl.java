@@ -10,13 +10,10 @@ import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import findcafe.cafe.dto.filteredcafedto.FilteredCafeResponseDto;
 import findcafe.cafe.dto.searchdto.CafeNameAddressDto;
-import findcafe.cafe.entity.FilteredCafe;
-import findcafe.cafe.entity.QFilteredCafe;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -145,7 +142,7 @@ public class FilteredCafeRepositoryImpl implements FilteredCafeRepositoryCustom 
                 ))
                 .from(filteredCafe)
                 .where(whereCondition)
-                .orderBy(distance.asc()) // 거리순 정렬
+                .orderBy(distance.asc())
                 .offset((long) page * size)
                 .limit(size)
                 .fetch();
@@ -159,6 +156,7 @@ public class FilteredCafeRepositoryImpl implements FilteredCafeRepositoryCustom 
         return new PageImpl<>(content, PageRequest.of(page, size), total != null ? total : 0L);
     }
 
+    // 거리 공식 웹 참조
     private NumberExpression<Double> calculateDistance(Double userLat, Double userLon) {
         // 지구 반지름 (km)
         double earthRadius = 6371.0;

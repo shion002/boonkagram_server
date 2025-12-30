@@ -1,6 +1,8 @@
 package findcafe.cafe.service;
 
 import findcafe.cafe.dto.postcafedto.PostCafeRequestDto;
+import findcafe.cafe.dto.postcafedto.PostCafeResponseDto;
+import findcafe.cafe.dto.reviewdto.ReviewResponseDto;
 import findcafe.cafe.entity.PostCafeMenu;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostCafeServiceTest {
 
     @Autowired private PostCafeService postCafeService;
+
+    @Test
+    @Transactional
+    void getPost() {
+    }
 
     @Test
     void basicSetting(){

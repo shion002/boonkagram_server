@@ -6,23 +6,27 @@ import findcafe.cafe.dto.postcafedto.PostCafeRequestDto;
 import findcafe.cafe.dto.postcafedto.PostCafeResponseDto;
 import findcafe.cafe.dto.postcafedto.PostResponseDto;
 import findcafe.cafe.dto.presigneddto.PresignedUrlResponse;
+import findcafe.cafe.dto.reviewdto.ReviewResponseDto;
 import findcafe.cafe.dto.utildto.ImageDto;
 import findcafe.cafe.entity.FilteredCafe;
 import findcafe.cafe.entity.PostCafe;
+import findcafe.cafe.entity.Review;
 import findcafe.cafe.mapper.FilteredCafeMapper;
 import findcafe.cafe.mapper.PostCafeMapper;
+import findcafe.cafe.mapper.ReviewMapper;
 import findcafe.cafe.repository.FilteredCafeRepository;
 import findcafe.cafe.repository.PostCafeRepository;
+import findcafe.cafe.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,17 +37,46 @@ public class PostCafeService {
     private final PostCafeRepository postCafeRepository;
     private final FilteredCafeRepository filteredCafeRepository;
     private final S3Service s3Service;
+    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
+    @Transactional(readOnly = true)
     public PostCafeResponseDto getPost(Long cafeId){
+
         PostCafe postCafe = postCafeRepository
                 .findByFilteredCafeId(cafeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 포스트 입니다"));
+
         return PostCafeMapper.toDto(postCafe);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReviewResponseDto> getPostReviews(Long cafeId, int page, int size, String sort){
+        Pageable pageable = createPageable(page, size, sort);
+
+        Page<Review> reviews = reviewRepository.findByPostCafeIdWithMember(cafeId, pageable);
+
+        List<Long> memberIds = reviews.getContent().stream()
+                .map(review -> review.getMember().getId()).distinct().toList();
+
+        Map<Long, Long> reviewCountMap = postCafeRepository.getReviewCountsByMemberIds(memberIds);
+
+        return reviews.map(review -> ReviewMapper.toDto(review, reviewCountMap));
+    }
+
+    private Pageable createPageable(int page, int size, String sort) {
+        Sort sortOrder = switch (sort) {
+            case "RATING_HIGH" -> Sort.by(Sort.Direction.DESC, "ratingScore");
+            case "RATING_LOW" -> Sort.by(Sort.Direction.ASC, "ratingScore");
+            default -> Sort.by(Sort.Direction.DESC, "createDate");
+        };
+        return PageRequest.of(page, size, sortOrder);
     }
 
     public PostCafeAndFilteredCafeResponseDto getCafePost(Long cafeId) {
         PostCafe postCafe = postCafeRepository
                 .findByFilteredCafeId(cafeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 포스트 입니다"));
-        FilteredCafe filteredCafe = filteredCafeRepository.findById(cafeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 카페 입니다"));
+        FilteredCafe filteredCafe = filteredCafeRepository
+                .findById(cafeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 카페 입니다"));
 
         PostCafeResponseDto postCafeResponseDto = PostCafeMapper.toDto(postCafe);
         FilteredCafeResponseDto filteredCafeResponseDto = FilteredCafeMapper.toDto(filteredCafe);
@@ -61,8 +94,18 @@ public class PostCafeService {
         PostCafe postCafe = postCafeRepository.findByFilteredCafeId(filteredCafe.getId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 포스트입니다"));
 
+        List<Review> reviews = postCafe.getReviews();
+
+
+
         if(filteredCafe.getS3FolderPath() != null) {
             s3Service.deleteFolder("cafe/" + filteredCafe.getS3FolderPath());
+        }
+
+        if(reviews != null) {
+            for (Review review : reviews) {
+                reviewService.deleteReview(review.getId());
+            }
         }
 
         postCafeRepository.delete(postCafe);
@@ -106,7 +149,7 @@ public class PostCafeService {
         filteredCafeRepository.save(filteredCafe);
 
         PostCafe postCafe = new PostCafe();
-        postCafe.setCreateDate(postCafeRequestDto, filteredCafe.getId(),
+        postCafe.setCreateData(postCafeRequestDto, filteredCafe.getId(),
                 imagePresignedUrls.stream().map(PresignedUrlResponse::getFileUrl).collect(Collectors.toList()));
         postCafeRepository.save(postCafe);
 

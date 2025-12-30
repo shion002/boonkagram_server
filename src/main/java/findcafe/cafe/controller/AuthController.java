@@ -69,33 +69,6 @@ public class AuthController {
 
     }
 
-    @GetMapping("/auth-check")
-    public ResponseEntity<?> checkAuth() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication != null && authentication.isAuthenticated()
-        && !"anonymousUser".equals(authentication.getPrincipal())) {
-            Member member = memberService.findByUsername(authentication.getName());
-
-            List<String> roles = authentication.getAuthorities()
-                    .stream().map(GrantedAuthority::getAuthority).toList();
-
-            MemberInfoResponse memberInfoResponse =
-                    new MemberInfoResponse(member.getId(), member.getUsername(), roles, true);
-
-            return ResponseEntity.ok(memberInfoResponse);
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("인증되지 않은 사용자입니다"));
-    }
-
-    @GetMapping("/session-expired")
-    public ResponseEntity<ErrorResponse> sessionExpired() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponse("세션이 만료되었습니다. 다시 로그인 해주세요."));
-    }
-
-
     @PostMapping("/send-code")
     public ResponseEntity<String> sendCode(@RequestParam String phoneNumber) {
         try {

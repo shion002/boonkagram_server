@@ -27,6 +27,10 @@ import java.util.*;
 @Slf4j
 public class KaKaoCafeFilterService {
 
+    /**
+     * 크롤링 웹 참조 코드
+     */
+
     private final CafeRepository cafeRepository;
     private final FilteredCafeRepository filteredCafeRepository;
     private final RestTemplate restTemplate = new RestTemplate();

@@ -4,6 +4,7 @@ import findcafe.cafe.dto.postcafedto.PostCafeRequestDto;
 import findcafe.cafe.dto.postcafedto.PostCafeResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class PostCafe {
 
     private Long filteredCafeId;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String intro;
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -42,7 +43,12 @@ public class PostCafe {
     @OrderColumn(name = "image_order")
     private List<String> imageUrls =  new ArrayList<>();
 
-    public PostCafe(String name, String address, String phone, String instagram, String webUrl, Long filteredCafeId, String intro, List<PostCafeMenu> menus, List<String> imageUrls) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postCafe")
+    private List<Review> reviews = new ArrayList<>();
+
+    public PostCafe(String name, String address, String phone, String instagram,
+                    String webUrl, Long filteredCafeId, String intro, List<PostCafeMenu> menus,
+                    List<String> imageUrls) {
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -61,7 +67,7 @@ public class PostCafe {
     public PostCafeResponseDto setUpdateData(PostCafeRequestDto postCafeRequestDto, List<String> imageUrls){
         return setData(postCafeRequestDto, imageUrls);
     }
-    public void setCreateDate(PostCafeRequestDto postCafeRequestDto, Long createdFilteredId, List<String> imageUrls){
+    public void setCreateData(PostCafeRequestDto postCafeRequestDto, Long createdFilteredId, List<String> imageUrls){
         if(postCafeRequestDto.getCafeName() == null){
             throw new RuntimeException("카페 이름이 등록되지 않았습니다");
         }

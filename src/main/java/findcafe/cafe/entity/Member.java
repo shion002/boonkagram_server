@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class Member implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private MemberGrade grade;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
+    private List<Review> reviews = new ArrayList<>();
 
     public Member() {
     }

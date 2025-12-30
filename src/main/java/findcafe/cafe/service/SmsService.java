@@ -123,7 +123,6 @@ public class SmsService {
             return false;
         }
 
-        // 인증 완료 후 10분 이내인지 확인
         if (LocalDateTime.now().isAfter(verifiedTime.plusMinutes(VERIFIED_EXPIRY_MINUTES))) {
             verifiedPhones.remove(phoneNumber);
             log.warn("인증 완료 상태 만료 - 전화번호: {}", phoneNumber);

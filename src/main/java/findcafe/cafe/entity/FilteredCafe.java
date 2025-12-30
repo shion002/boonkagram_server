@@ -31,16 +31,16 @@ public class FilteredCafe {
     private List<String> keywords = new ArrayList<>(); // 키워드 배열
 
     @Column(length = 500)
-    private String thumbnail; // 대표 이미지 URL
+    private String thumbnail;
 
-    private String source; // 데이터 출처
-    private Double rating; // 평점
-    private Integer reviewCount; // 리뷰 개수
+    private String source;
+    private Double rating;
+    private Integer reviewCount;
     private String titleIntro;
     private String s3FolderPath;
 
-    private LocalDateTime createData; // 등록 시간
-    private LocalDateTime updateData; // 업데이트 시간
+    private LocalDateTime createData;
+    private LocalDateTime updateData;
 
     public FilteredCafe(String name, String address, String roadAddress, String industryCode, String industryName, Double lat,
                         Double lon, List<String> keywords, String source, Double rating,

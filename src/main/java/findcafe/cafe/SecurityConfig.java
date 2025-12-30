@@ -38,12 +38,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/cafe/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/auth/logout").permitAll()
+                        .requestMatchers("/api/review/create").authenticated()
                         .requestMatchers(
                                 "/api/list/**",
                                 "/api/cafe/**",
                                 "/api/auth/**",
                                 "/api/cafes/**",
                                 "/api/search/**",
+                                "/api/review/**",
                                 "/api/**"
                                 ).permitAll()
                         .anyRequest().authenticated()

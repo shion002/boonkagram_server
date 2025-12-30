@@ -17,7 +17,6 @@ import java.util.List;
 public class SearchService {
     private final FilteredCafeRepository filteredCafeRepository;
 
-    // 10개만
     public CafeSearchResponseDto cafeSearch(String search){
         List<CafeNameAddressDto> nameList = filteredCafeRepository.findTop10NameWithAddressByNameContaining(search);
 

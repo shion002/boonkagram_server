@@ -10,7 +10,7 @@ spring:
     driver-class-name: ${DATABASE_DRIVER_CLASS}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

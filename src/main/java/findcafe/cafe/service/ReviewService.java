@@ -4,11 +4,14 @@ import findcafe.cafe.dto.presigneddto.PresignedUrlResponse;
 import findcafe.cafe.dto.reviewdto.ReviewPresignedResponseDto;
 import findcafe.cafe.dto.reviewdto.ReviewRequestDto;
 import findcafe.cafe.dto.reviewdto.ReviewResponseDto;
+import findcafe.cafe.dto.reviewdto.ReviewStatsDto;
 import findcafe.cafe.dto.utildto.ImageDto;
+import findcafe.cafe.entity.FilteredCafe;
 import findcafe.cafe.entity.Member;
 import findcafe.cafe.entity.PostCafe;
 import findcafe.cafe.entity.Review;
 import findcafe.cafe.mapper.ReviewMapper;
+import findcafe.cafe.repository.FilteredCafeRepository;
 import findcafe.cafe.repository.MemberRepository;
 import findcafe.cafe.repository.PostCafeRepository;
 import findcafe.cafe.repository.ReviewRepository;
@@ -35,6 +38,7 @@ public class ReviewService {
     private final PostCafeRepository postCafeRepository;
     private final S3Service s3Service;
     private final FilterCafeService filterCafeService;
+    private final FilteredCafeRepository filteredCafeRepository;
 
     @Transactional(readOnly = true)
     public boolean checkReview(Long filteredCafeId, String username){
@@ -97,9 +101,19 @@ public class ReviewService {
 
         reviewRepository.save(review);
 
-        filterCafeService.updateFilteredCafeReviewStats(postCafe.getFilteredCafeId());
+        FilteredCafe filteredCafe = filteredCafeRepository.findById(postCafe.getFilteredCafeId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 카페입니다"));
 
-        log.info("저장완료");
+        ReviewStatsDto stats = reviewRepository.getReviewStatsByFilteredCafeId(reviewRequestDto.getPostId());
+
+        log.info("통계 조회 - 평점: {}, 리뷰수: {}", stats.getAverageRating(), stats.getReviewCountAsInt());
+
+        filteredCafe.updateReviewStats(stats.getAverageRating(), stats.getReviewCountAsInt());
+
+        filteredCafeRepository.saveAndFlush(filteredCafe);
+
+        log.info("FilteredCafe 업데이트 완료 - ID: {}, 평점: {}, 리뷰수: {}",
+                filteredCafe.getId(), filteredCafe.getRating(), filteredCafe.getReviewCount());
 
         return new ReviewPresignedResponseDto(reviewImages);
     }

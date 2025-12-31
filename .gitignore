@@ -37,6 +37,7 @@ out/
 .vscode/
 
 src/main/resources/application-local.yml
+src/main/java/findcafe/cafe/service/KaKaoCafeFilterService.java
 
 ### Test ###
 src/test/

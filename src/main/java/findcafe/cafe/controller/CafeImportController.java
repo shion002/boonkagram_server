@@ -1,7 +1,6 @@
 package findcafe.cafe.controller;
 
 import findcafe.cafe.service.CafeImportService;
-import findcafe.cafe.service.KaKaoCafeFilterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CafeImportController {
 
     private final CafeImportService cafeImportService;
-    private final KaKaoCafeFilterService kaKaoCafeFilterService;
 
     public ResponseEntity<String> importCafes() {
         cafeImportService.importCafesAsync();

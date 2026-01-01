@@ -32,7 +32,7 @@ public class PostCafeAndFilteredCafeResponseDto {
         this.cafeName = filteredCafeResponseDto.getName();
         this.lat = filteredCafeResponseDto.getLat();
         this.lon = filteredCafeResponseDto.getLon();
-        this.titleIntro = filteredCafeResponseDto.getIntro();
+        this.titleIntro = filteredCafeResponseDto.getTitleIntro();
         this.address = postCafeResponseDto.getAddress();
         this.phone = postCafeResponseDto.getPhone();
         this.instagram = postCafeResponseDto.getInstagram();
@@ -48,7 +48,7 @@ public class PostCafeAndFilteredCafeResponseDto {
         this.cafeName = filteredCafeResponseDto.getName();
         this.lat = filteredCafeResponseDto.getLat();
         this.lon = filteredCafeResponseDto.getLon();
-        this.titleIntro = filteredCafeResponseDto.getIntro();
+        this.titleIntro = filteredCafeResponseDto.getTitleIntro();
         this.address = postCafeResponseDto.getAddress();
         this.phone = postCafeResponseDto.getPhone();
         this.instagram = postCafeResponseDto.getInstagram();
